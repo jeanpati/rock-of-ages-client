@@ -16,7 +16,26 @@ export const RockList = ({ rocks, fetchRocks, showAll }) => {
           <div>
             In the collection of {rock.user.first_name} {rock.user.last_name}{" "}
           </div>
-          <div></div>
+          <div>
+            <button
+              onClick={async () => {
+                const response = await fetch(
+                  `http://localhost:8000/rocks/${rock.id}`,
+                  {
+                    method: "DELETE",
+                    headers: {
+                      Authorization: `Token ${
+                        JSON.parse(localStorage.getItem("rock_token")).token
+                      }`,
+                    },
+                  }
+                );
+              }}
+              className="border border-solid bg-pink-100 p-1"
+            >
+              Delete
+            </button>
+          </div>
         </div>
       ));
     }
