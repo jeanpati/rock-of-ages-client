@@ -10,32 +10,39 @@ export const RockList = ({ rocks, fetchRocks, showAll }) => {
       return rocks.map((rock) => (
         <div
           key={`key-${rock.id}`}
-          className="border p-5 border-solid hover:bg-fuchsia-500 hover:text-violet-50 rounded-md border-violet-900 mt-5 bg-slate-50"
+          className="border p-5 border-solid hover:bg-green-100 hover:text-green-900 rounded-md border-violet-900 mt-5 bg-slate-50"
         >
           {rock.name} ({rock.type.label}) weighs {rock.weight} kg
           <div>
             In the collection of {rock.user.first_name} {rock.user.last_name}{" "}
           </div>
-          <div>
-            <button
-              onClick={async () => {
-                const response = await fetch(
-                  `http://localhost:8000/rocks/${rock.id}`,
-                  {
-                    method: "DELETE",
-                    headers: {
-                      Authorization: `Token ${
-                        JSON.parse(localStorage.getItem("rock_token")).token
-                      }`,
-                    },
+          {showAll ? (
+            ""
+          ) : (
+            <div>
+              <button
+                onClick={async () => {
+                  const response = await fetch(
+                    `http://localhost:8000/rocks/${rock.id}`,
+                    {
+                      method: "DELETE",
+                      headers: {
+                        Authorization: `Token ${
+                          JSON.parse(localStorage.getItem("rock_token")).token
+                        }`,
+                      },
+                    }
+                  );
+                  if (response.status === 204) {
+                    fetchRocks(showAll);
                   }
-                );
-              }}
-              className="border border-solid bg-pink-100 p-1"
-            >
-              Delete
-            </button>
-          </div>
+                }}
+                className="border border-solid bg-pink-100 p-1"
+              >
+                Delete
+              </button>
+            </div>
+          )}
         </div>
       ));
     }
